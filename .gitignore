@@ -1,0 +1,17 @@
+bin/
+build/
+lib/
+obj/
+*.o
+*.so
+
+AS.csv
+
+## Windows
+*.dll
+*.exe
+
+## Codeblocks files
+*.cbp
+*.depend
+*.layout
