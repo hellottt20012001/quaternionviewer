@@ -9,17 +9,20 @@ Graphics graphics;
 
 void printInfo()
 {
-	std::cout << "RED = TOP \t CYAN = BOTTOM\n";
-	std::cout << "GREEN = RIGHT \t MAGENTA = LEFT\n";
-	std::cout << "BLUE = FRONT \t YELLOW = BACK\n\n";
+	std::cout << "TOP = WHITE\t BOTTOM = YELLOW\n";
+	std::cout << "RIGHT = RED\t LEFT = ORANGE\n";
+	std::cout << "FRONT = GREEN\t BACK = BLUE\n";
+	std::cout << "\n";
 
 	std::cout << "Press A/Z to move forward/backward between frames.\n";
+	std::cout << "Press S/X to adjust playback speed.\n";
 	std::cout << "Hold right mouse button to rotate view.\n";
-	std::cout << "Press ENTER = TOP view.\n";
 	std::cout << "Press DOWN = FRONT view.\n";
 	std::cout << "Press UP = BACK view.\n";
 	std::cout << "Press LEFT = LEFT view.\n";
-	std::cout << "Press RIGHT = RIGHT view.\n\n";
+	std::cout << "Press RIGHT = RIGHT view.\n";
+	std::cout << "Press ENTER = TOP view.\n";
+	std::cout << "\n";
 }
 
 int readSettings()
@@ -40,7 +43,7 @@ int readSettings()
 			{
 				float frameSpeed;
 				std::stringstream(val) >> frameSpeed;
-				graphics.frameSpeed = 1.0f/frameSpeed;
+				graphics.frameSpeed = frameSpeed;
 				std::cout << "\tframeSpeed = " << frameSpeed << "\n";
 			}
 		}
@@ -51,11 +54,11 @@ int readSettings()
 
 int main()
 {
-	std::cout << "##### Quaterinon Viewer\n" << "##### 2015/11/28\n" << "##### by En Shih (seanstone5923@gmail.com)\n\n";
+	std::cout << "##### Quaterinon Viewer\n" << "##### 2015/12/5\n" << "##### by En Shih (seanstone5923@gmail.com)\n\n";
 
 	if (graphics.init())
 	{
-		readSettings();
+		//readSettings();
 		printInfo();
 		graphics.loop();
 	}

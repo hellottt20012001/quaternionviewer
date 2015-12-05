@@ -4,6 +4,8 @@ lib/
 obj/
 *.o
 *.so
+*.ttf
+QuaternionViewer
 
 AS.csv
 

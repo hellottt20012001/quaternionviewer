@@ -30,7 +30,7 @@ public:
 	void setLeftView() { cameraVector = vec3(-5,0,0); upVector = quat(0,0,1); }
 	void setRightView() { cameraVector = vec3(5,0,0); upVector = quat(0,0,1); }
 
-	View() { setTopView(); }
+	View() { setFrontView(); }
 };
 
 #endif // VIEW_H_INCLUDED

@@ -12,6 +12,7 @@
 #include <view.h>
 #include <object.h>
 #include <quatview.h>
+#include <text.h>
 
 class Graphics
 {
@@ -23,12 +24,14 @@ class Graphics
 		QuatViewObject plate;
         View view;
 		Data data;
+		FreeTypeEngine freeTypeEngine;
 
 		int frame = 0;
+		int time = 0;
 
     public:
 
-		float frameSpeed = 0.1;
+		float frameSpeed = 1;
 
         int init();
         int initWindow();

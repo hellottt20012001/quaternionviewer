@@ -46,7 +46,7 @@ public:
 class DataLine
 {
 public:
-	std::string Time;
+	int Time;
 	int Package_NO;
 	float Temperature;
 	float Pressure;
