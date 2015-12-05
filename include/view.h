@@ -11,7 +11,7 @@ class View
 {
 public:
 	float FoV = M_PI/180.0 * 45.0f;
-	float aspect = 1024.0f/768.0f;
+	float aspect = 1024.0f/720.0f;
 	float near = 0.1f, far = 100.0f;
 
 	quat cameraVector;

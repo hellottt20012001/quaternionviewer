@@ -48,6 +48,7 @@ class DataLine
 public:
 	int Time;
 	int Package_NO;
+	float OutsideTemperature;
 	float Temperature;
 	float Pressure;
 	quat Orientation;

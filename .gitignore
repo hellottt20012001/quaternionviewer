@@ -4,16 +4,10 @@ lib/
 obj/
 *.o
 *.so
-*.ttf
-QuaternionViewer
-
-AS.csv
 
 ## Windows
 *.dll
 *.exe
 
-## Codeblocks files
-*.cbp
-*.depend
-*.layout
+QuaternionViewer
+*.csv

@@ -16,14 +16,13 @@
 
 class Graphics
 {
-        int width = 1024, height = 768;
+        int width = 1024, height = 720;
         GLFWwindow* Window;
 
         QuatViewProgram program;
 		QuatViewObject cube;
 		QuatViewObject plate;
         View view;
-		Data data;
 		FreeTypeEngine freeTypeEngine;
 
 		int frame = 0;
@@ -31,7 +30,8 @@ class Graphics
 
     public:
 
-		float frameSpeed = 1;
+		float frameSpeed = 8;
+		Data data;
 
         int init();
         int initWindow();

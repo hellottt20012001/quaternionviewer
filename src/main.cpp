@@ -14,9 +14,9 @@ void printInfo()
 	std::cout << "FRONT = GREEN\t BACK = BLUE\n";
 	std::cout << "\n";
 
-	std::cout << "Press A/Z to move forward/backward between frames.\n";
+	std::cout << "Press A/Z to play forward/backward.\n";
 	std::cout << "Press S/X to adjust playback speed.\n";
-	std::cout << "Hold right mouse button to rotate view.\n";
+	std::cout << "Hold RIGHT mouse button to rotate view.\n";
 	std::cout << "Press DOWN = FRONT view.\n";
 	std::cout << "Press UP = BACK view.\n";
 	std::cout << "Press LEFT = LEFT view.\n";
@@ -52,11 +52,14 @@ int readSettings()
 	} else return 0;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
 	std::cout << "##### Quaterinon Viewer\n" << "##### 2015/12/5\n" << "##### by En Shih (seanstone5923@gmail.com)\n\n";
 
-	if (graphics.init())
+	if(argc > 1) { if(!graphics.data.readFromCSV(argv[1])) return 0; }
+	else { if(!graphics.data.readFromCSV("AS.csv")) return 0; }
+
+	if(graphics.init())
 	{
 		//readSettings();
 		printInfo();

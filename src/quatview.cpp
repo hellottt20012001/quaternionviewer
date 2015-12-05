@@ -132,32 +132,46 @@ int Data::readFromCSV(const char* csv_filepath)
 	std::ifstream csvStream(csv_filepath, std::ios::in);
 	if(csvStream.is_open())
     {
-		std::string line;
-		getline(csvStream, line);
-		while(getline(csvStream, line))
+		std::string line; std::stringstream lineStream;
+		auto readVal = [&] () { std::string val; std::getline(lineStream, val , ','); return std::stringstream(val); };
+
+		std::getline(csvStream, line);
+		lineStream = std::stringstream(line);
+		std::vector<std::string> keys; std::string key;
+		while(std::getline(lineStream, key , ',')) keys.push_back(key);
+
+		while(std::getline(csvStream, line))
 		{
-			std::stringstream lineStream(line);
+			lineStream = std::stringstream(line);
 			DataLine dataLine;
-			auto readVal = [&] () { std::string val; std::getline(lineStream, val , ','); return std::stringstream(val); };
-
-			std::string time;
-			readVal() >> time;
-			std::stringstream timeStream(time);
-			auto readTime = [&] () { std::string val; std::getline(timeStream, val , ':'); return std::stringstream(val); };
-			int hr, min, sec;
-			readTime() >> hr; readTime() >> min; readTime() >> sec;
-			dataLine.Time = hr * 3600 + min * 60 + sec;
-
-			readVal() >> dataLine.Package_NO;
-			readVal() >> dataLine.Temperature;
-			readVal() >> dataLine.Pressure;
 			float w, x, y, z;
-			readVal() >> w; readVal() >> x; readVal() >> y; readVal() >> z;
+
+			for(unsigned int k = 0; k < keys.size(); k++)
+			{
+				if(keys[k].compare("Time") == 0)
+				{
+					std::string time;
+					readVal() >> time;
+					std::stringstream timeStream(time);
+					auto readTime = [&] () { std::string val; std::getline(timeStream, val , ':'); return std::stringstream(val); };
+					int hr, min, sec;
+					readTime() >> hr; readTime() >> min; readTime() >> sec;
+					dataLine.Time = hr * 3600 + min * 60 + sec;
+				}
+				else if(keys[k].compare("Package N.O") == 0) readVal() >> dataLine.Package_NO;
+				else if(keys[k].compare("Outside Temperature") == 0)	readVal() >> dataLine.OutsideTemperature;
+				else if(keys[k].compare("Temperature") == 0) readVal() >> dataLine.Temperature;
+				else if(keys[k].compare("Pressure") == 0)	readVal() >> dataLine.Pressure;
+				else if(keys[k].compare("W") == 0) readVal() >> w;
+				else if(keys[k].compare("X") == 0) readVal() >> x;
+				else if(keys[k].compare("Y") == 0) readVal() >> y;
+				else if(keys[k].compare("Z") == 0) readVal() >> z;
+				else if(keys[k].compare("Voltage") == 0) readVal() >> dataLine.Voltage;
+				else if(keys[k].compare("RSSI") == 0) readVal() >> dataLine.RSSI;
+				else if(keys[k].compare("Frequency Error") == 0) readVal() >> dataLine.Frequency;
+				else if(keys[k].compare("CRC") == 0) readVal() >> dataLine.CRC;
+			}
 			dataLine.Orientation = quat(w, x, y, z);
-			readVal() >> dataLine.Voltage;
-			readVal() >> dataLine.RSSI;
-			readVal() >> dataLine.Frequency;
-			readVal() >> dataLine.CRC;
 			item.push_back(dataLine);
 		}
 		csvStream.close(); std::cout << "Loaded \"" << csv_filepath << "\"\n\n"; return 1;
