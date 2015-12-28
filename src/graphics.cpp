@@ -3,15 +3,23 @@
 int Graphics::init()
 {
 	if(!glfwInit()) {std::cout << "Failed to initialize GLFW\n"; return 0;} // Initialise GLFW
+	std::cout << "GLFW initialized\n";
     if(!initWindow()) {std::cout << "Failed to initialize GLFW Window\n"; return 0;} // Initialise GLFW Window
-	glewExperimental = true;
-	if(glewInit() != GLEW_OK) { std::cout << "Failed to initialize GLEW\n"; return 0;} // Initialize GLEW
+	std::cout << "GLFW window created\n";
+	if(ogl_LoadFunctions() == ogl_LOAD_FAILED) { std::cout << "Failed to load OpenGL functions\n"; return 0;}
+	std::cout << "OpenGL functions loaded\n";
+
+	// Get version info
+	const GLubyte* Renderer = glGetString (GL_RENDERER);
+	const GLubyte* Version  = glGetString (GL_VERSION);
+	printf("Renderer: %s\n", Renderer);
+	printf("OpenGL version %s\n\n", Version);
 
 	time = data[0].Time;
 
-	program.load();
-	cube.createCube();
-	plate.createPlate();
+	program.load(); std::cout << "Program loaded\n";
+	cube.createCube(); std::cout << "Cube created\n";
+	plate.createPlate(); std::cout << "Plate created\n";
 
 	freeTypeEngine.initFreeType();
 	freeTypeEngine.load();
@@ -22,9 +30,11 @@ int Graphics::init()
 int Graphics::initWindow()
 {
     // Open a GLFW window and create its OpenGL context
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	std::cout << "Initializing GLFW Window\n";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2); glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
+	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	std::cout << "Creating GLFW Window\n";
 	Window = glfwCreateWindow(width, height, "Quaternion Viewer", NULL, NULL);
 	if( Window == NULL ){ std::cout << "Failed to initialize GLFW Window\n"; glfwTerminate(); return -1; }
     glfwMakeContextCurrent(Window);
@@ -32,12 +42,6 @@ int Graphics::initWindow()
     // Ensure we can capture the escape key being pressed
 	glfwSetInputMode(Window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetCursorPos(Window, width/2, height/2);
-
-	// Get version info
-	const GLubyte* Renderer = glGetString (GL_RENDERER);
-    const GLubyte* Version  = glGetString (GL_VERSION);
-    printf("Renderer: %s\n", Renderer);
-    printf("OpenGL version %s\n\n", Version);
 
 	return 1;
 }

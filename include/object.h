@@ -2,7 +2,7 @@
 #define OBJECT_H_INCLUDED
 
 #include <iostream>
-#include <GL/glew.h>
+#include "gl_2_1.h"
 
 typedef GLuint VBO;
 
@@ -10,8 +10,8 @@ class Object
 {
 public:
 	GLuint VAO;
-	void init() { glGenVertexArrays(1, &VAO); genBuffers(); }
-	~Object() { deleteBuffers(); glDeleteVertexArrays(1, &VAO);}
+	void init() {  genBuffers(); }
+	~Object() { deleteBuffers(); }
 	virtual void genBuffers() {}
 	virtual void deleteBuffers() {}
 };

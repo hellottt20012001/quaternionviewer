@@ -1,7 +1,7 @@
+#include <stdio.h>
+
 #include <graphics.h>
 #include <quatview.h>
-
-#include <stdio.h>
 
 using namespace std;
 
@@ -54,7 +54,7 @@ int readSettings()
 
 int main(int argc, char* argv[])
 {
-	std::cout << "##### Quaterinon Viewer\n" << "##### 2015/12/5\n" << "##### by En Shih (seanstone5923@gmail.com)\n\n";
+	std::cout << "##### Quaterinon Viewer\n" << "##### 2015/12/28\n" << "##### by En Shih (seanstone5923@gmail.com)\n\n";
 
 	if(argc > 1) { if(!graphics.data.readFromCSV(argv[1])) return 0; }
 	else { if(!graphics.data.readFromCSV("AS.csv")) return 0; }

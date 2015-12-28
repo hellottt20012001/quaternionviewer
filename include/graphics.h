@@ -1,10 +1,8 @@
 #ifndef GRAPHICS_H_INCLUDED
 #define GRAPHICS_H_INCLUDED
 
-// GLEW
-#include <GL/glew.h>
+#include "gl_2_1.h"
 
-// GLFW
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
 

@@ -1,13 +1,6 @@
 #ifndef QUATVIEW_H_INCLUDED
 #define QUATVIEW_H_INCLUDED
 
-#include <GL/glew.h>
-
-#include <object.h>
-#include <shader.h>
-#include <vec.h>
-#include <quaternion.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -15,6 +8,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+#include <vec.h>
+#include <quaternion.h>
+
+#include "gl_2_1.h"
+#include <object.h>
+#include <shader.h>
 
 class QuatViewObject : Object
 {

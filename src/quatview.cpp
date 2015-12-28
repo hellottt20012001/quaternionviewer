@@ -1,5 +1,4 @@
 #include <quatview.h>
-#include <iostream>
 
 void QuatViewProgram::load()
 {
@@ -40,7 +39,6 @@ void QuatViewProgram::draw(QuatViewObject object, mat4 mvp)
 
 void QuatViewObject::genBuffers()
 {
-	glBindVertexArray(VAO);
 	glGenBuffers(1, &VertexXYZ);
 	glGenBuffers(1, &VertexColor);
 }

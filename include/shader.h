@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <GL/glew.h>
+#include "gl_2_1.h"
 
 typedef GLuint attrib;
 typedef GLuint uniform;

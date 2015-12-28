@@ -3,6 +3,7 @@
 mat4 View::MVP()
 {
 	// Projection matrix : Field of View, aspect ratio, display range : near <-> far
+	float near = 0.1f, far = 100.0f;
 	mat4 Projection = glm::perspective(FoV, aspect, near, far);
 
 	// Camera matrix

@@ -1,9 +1,6 @@
 #ifndef VIEW_H_INCLUDED
 #define VIEW_H_INCLUDED
 
-// GLFW
-#include <GLFW/glfw3.h>
-
 #include <quaternion.h>
 #include <vec.h>
 
@@ -12,7 +9,6 @@ class View
 public:
 	float FoV = M_PI/180.0 * 45.0f;
 	float aspect = 1024.0f/720.0f;
-	float near = 0.1f, far = 100.0f;
 
 	quat cameraVector;
 	quat upVector;
