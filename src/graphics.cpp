@@ -10,8 +10,8 @@ int Graphics::init()
 	std::cout << "OpenGL functions loaded\n";
 
 	// Get version info
-	const GLubyte* Renderer = glGetString (GL_RENDERER);
-	const GLubyte* Version  = glGetString (GL_VERSION);
+	const GLubyte* Renderer = glGetString(GL_RENDERER);
+	const GLubyte* Version  = glGetString(GL_VERSION);
 	printf("Renderer: %s\n", Renderer);
 	printf("OpenGL version %s\n\n", Version);
 
@@ -23,6 +23,7 @@ int Graphics::init()
 
 	freeTypeEngine.initFreeType();
 	freeTypeEngine.load();
+	std::cout<< "Freetype engine initialized\n";
 
 	return 1;
 }
@@ -30,11 +31,9 @@ int Graphics::init()
 int Graphics::initWindow()
 {
     // Open a GLFW window and create its OpenGL context
-	std::cout << "Initializing GLFW Window\n";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2); glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	//glfwWindowHint(GLFW_SAMPLES, 4);
 	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	std::cout << "Creating GLFW Window\n";
 	Window = glfwCreateWindow(width, height, "Quaternion Viewer", NULL, NULL);
 	if( Window == NULL ){ std::cout << "Failed to initialize GLFW Window\n"; glfwTerminate(); return -1; }
     glfwMakeContextCurrent(Window);
@@ -52,7 +51,7 @@ void Graphics::loop()
     {
         inputs();
 
-		std::cout << "Time: ";
+		/*std::cout << "Time: ";
 		int hr = time / 3600, min = (time % 3600) / 60, sec = time % 60;
 		std::cout << hr << ":";
 		if(min < 10) std::cout << "0";
@@ -65,41 +64,8 @@ void Graphics::loop()
 		std::cout << data[frame].Package_NO;
 		std::cout << "\t";
 
-		/*std::cout << "Orientation: ";
-		std::cout << data[frame].Orientation;
-		std::cout << "\t";*/
-
-		/*std::cout << "Temp: ";
-		std::cout << data[frame].Temperature;
-		std::cout << "\t";
-
-		std::cout << "Pressure: ";
-		std::cout << data[frame].Pressure;
-		std::cout << "\t";*/
-
-		/*std::cout << "Voltage: ";
-		std::cout << data[frame].Voltage;
-		std::cout << "\t";*/
-
-		/*std::cout << "RSSI: ";
-		std::cout << data[frame].RSSI;
-		std::cout << "\t";*/
-
-		/*std::cout << "Playback speed: ";
-		std::cout << frameSpeed;
-		std::cout << "x";
-		std::cout << "\t";*/
-
-		/*std::cout << "Freq Err: ";
-		std::cout << data[frame].Frequency;
-		std::cout << "\t";*/
-
-		/*std::cout << "CRC: ";
-		std::cout << data[frame].CRC;
-		std::cout << "\t";*/
-
-		std::cout << "     \xd";
-		cube.orientation = data[frame].Orientation;
+		std::cout << "     \xd";*/
+		cube.orientation = tcpServer.orientation;
 		draw();
         glfwSwapBuffers(Window); glfwPollEvents();
     }

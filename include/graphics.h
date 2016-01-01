@@ -3,6 +3,8 @@
 
 #include "gl_2_1.h"
 
+#include <thread>
+
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
 
@@ -11,9 +13,11 @@
 #include <object.h>
 #include <quatview.h>
 #include <text.h>
+#include <tcp.h>
 
 class Graphics
 {
+    private:
         int width = 1024, height = 720;
         GLFWwindow* Window;
 
@@ -28,6 +32,8 @@ class Graphics
 
     public:
 
+		TCPserver tcpServer;
+
 		float frameSpeed = 8;
 		Data data;
 
@@ -37,8 +43,18 @@ class Graphics
 		void inputs();
         void draw();
 
-        Graphics() {}
+        Graphics() : tcpServer(1234) {}
         ~Graphics() { glfwTerminate(); }
+
+		void operator()()
+		{
+			if(init())
+			{
+				std::thread mthread2(std::ref(tcpServer));
+				loop();
+				mthread2.join();
+			}
+		}
 };
 
 #endif // GRAPHICS_H_INCLUDED
