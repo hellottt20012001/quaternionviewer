@@ -63,7 +63,7 @@ private:
 		start_accept();
     }
 
-  	boost::asio::io_service io_service;
+	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::acceptor acceptor;
 	TCPsession* session;
 
@@ -80,6 +80,8 @@ public:
 		}
 		catch (std::exception& e) { std::cerr << "Exception: " << e.what() << "\n"; }
 	}
+
+	void stop() { io_service.stop(); }
 
 	quat orientation;
 };

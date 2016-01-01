@@ -13,8 +13,8 @@ void printInfo()
 	std::cout << "FRONT = GREEN\t BACK = BLUE\n";
 	std::cout << "\n";
 
-	std::cout << "Press A/Z to play forward/backward.\n";
-	std::cout << "Press S/X to adjust playback speed.\n";
+	/*std::cout << "Press A/Z to play forward/backward.\n";
+	std::cout << "Press S/X to adjust playback speed.\n";*/
 	std::cout << "Hold RIGHT mouse button to rotate view.\n";
 	std::cout << "Press DOWN = FRONT view.\n";
 	std::cout << "Press UP = BACK view.\n";
@@ -32,12 +32,12 @@ int main(int argc, char* argv[])
 
 	Graphics graphics;
 	if(argc > 1) { if(!graphics.data.readFromCSV(argv[1])) return 0; }
-	else { if(!graphics.data.readFromCSV("AS.csv")) return 0; }
+	//else { if(!graphics.data.readFromCSV("AS.csv")) return 0; }
 
 	printInfo();
 
-	std::thread mthread1(std::ref(graphics));
-	mthread1.join();
+	std::thread graphicsThread(std::ref(graphics));
+	graphicsThread.join();
 
     return 0;
 }

@@ -50,9 +50,10 @@ class Graphics
 		{
 			if(init())
 			{
-				std::thread mthread2(std::ref(tcpServer));
+				std::thread tcpSeverThread(std::ref(tcpServer));
 				loop();
-				mthread2.join();
+				tcpServer.stop();
+				tcpSeverThread.join();
 			}
 		}
 };

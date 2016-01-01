@@ -15,7 +15,7 @@ int Graphics::init()
 	printf("Renderer: %s\n", Renderer);
 	printf("OpenGL version %s\n\n", Version);
 
-	time = data[0].Time;
+	//time = data[0].Time;
 
 	program.load(); std::cout << "Program loaded\n";
 	cube.createCube(); std::cout << "Cube created\n";
@@ -92,7 +92,7 @@ void Graphics::inputs()
 	else if(glfwGetKey(Window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		view.setRightView();
 
-	if(glfwGetKey(Window, GLFW_KEY_A) == GLFW_PRESS && time < data[data.size()-1].Time)
+	/*if(glfwGetKey(Window, GLFW_KEY_A) == GLFW_PRESS && time < data[data.size()-1].Time)
 	{
 		static float lastTime_KEY_A = glfwGetTime();
 		float currentTime = glfwGetTime();
@@ -156,7 +156,7 @@ void Graphics::inputs()
 			time = data[frame].Time;
 			lastTime_KEY_PAGEUP= currentTime;
 		}
-	}
+	}*/
 }
 
 void Graphics::draw()
@@ -172,29 +172,37 @@ void Graphics::draw()
  	float sy = 2.0 / height;
 	std::stringstream renderStream;
 
-	freeTypeEngine.render("Press HOME to go to start of data.", -1 + 680 * sx, 1 - 30 * sy, sx, sy);
+	/*freeTypeEngine.render("Press HOME to go to start of data.", -1 + 680 * sx, 1 - 30 * sy, sx, sy);
 	freeTypeEngine.render("Press END to go to end of data.", -1 + 680 * sx, 1 - 50 * sy, sx, sy);
 	freeTypeEngine.render("Press PAGE UP to go back 100 frames.", -1 + 680 * sx, 1 - 70 * sy, sx, sy);
 	freeTypeEngine.render("Press PAGE DOWN to go forward 100 frames.", -1 + 680 * sx, 1 - 90 * sy, sx, sy);
 
 	freeTypeEngine.render("Press A/Z to play forward/backward.", -1 + 720 * sx, 1 - 130 * sy, sx, sy);
 	freeTypeEngine.render("Press S/X to adjust playback speed.", -1 + 720 * sx, 1 - 150 * sy, sx, sy);
-	freeTypeEngine.render("Hold RIGHT mouse button to rotate view.", -1 + 720 * sx, 1 - 170 * sy, sx, sy);
+	freeTypeEngine.render("Hold RIGHT mouse button to rotate view.", -1 + 720 * sx, 1 - 170 * sy, sx, sy);*/
 
-	freeTypeEngine.render("Press DOWN = FRONT view.", -1 + 800 * sx, 1 - 210 * sy, sx, sy);
-	freeTypeEngine.render("Press UP = BACK view.", -1 + 800 * sx, 1 - 230 * sy, sx, sy);
-	freeTypeEngine.render("Press LEFT = LEFT view.", -1 + 800 * sx, 1 - 250 * sy, sx, sy);
-	freeTypeEngine.render("Press RIGHT = RIGHT view.", -1 + 800 * sx, 1 - 270 * sy, sx, sy);
-	freeTypeEngine.render("Press ENTER = TOP view.", -1 + 800 * sx, 1 - 290 * sy, sx, sy);
+	freeTypeEngine.render("Press DOWN = FRONT view.", -1 + 800 * sx, 1 - 30 * sy, sx, sy);
+	freeTypeEngine.render("Press UP = BACK view.", -1 + 800 * sx, 1 - 50 * sy, sx, sy);
+	freeTypeEngine.render("Press LEFT = LEFT view.", -1 + 800 * sx, 1 - 70 * sy, sx, sy);
+	freeTypeEngine.render("Press RIGHT = RIGHT view.", -1 + 800 * sx, 1 - 90 * sy, sx, sy);
+	freeTypeEngine.render("Press ENTER = TOP view.", -1 + 800 * sx, 1 - 110 * sy, sx, sy);
 
-	freeTypeEngine.render("TOP = WHITE", -1 + 860 * sx, 1 - 330 * sy, sx, sy);
-	freeTypeEngine.render("BOTTOM = YELLOW", -1 + 860 * sx, 1 - 350 * sy, sx, sy);
-	freeTypeEngine.render("RIGHT = RED", -1 + 860 * sx, 1 - 370 * sy, sx, sy);
-	freeTypeEngine.render("LEFT = ORANGE", -1 + 860 * sx, 1 - 390 * sy, sx, sy);
-	freeTypeEngine.render("FRONT = GREEN", -1 + 860 * sx, 1 - 410 * sy, sx, sy);
-	freeTypeEngine.render("BACK = BLUE", -1 + 860 * sx, 1 - 430 * sy, sx, sy);
+	freeTypeEngine.render("TOP = WHITE", -1 + 860 * sx, 1 - 150 * sy, sx, sy);
+	freeTypeEngine.render("BOTTOM = YELLOW", -1 + 860 * sx, 1 - 170 * sy, sx, sy);
+	freeTypeEngine.render("RIGHT = RED", -1 + 860 * sx, 1 - 190 * sy, sx, sy);
+	freeTypeEngine.render("LEFT = ORANGE", -1 + 860 * sx, 1 - 210 * sy, sx, sy);
+	freeTypeEngine.render("FRONT = GREEN", -1 + 860 * sx, 1 - 230 * sy, sx, sy);
+	freeTypeEngine.render("BACK = BLUE", -1 + 860 * sx, 1 - 250 * sy, sx, sy);
 
 	renderStream = std::stringstream();
+	renderStream << "Orientation: ";
+	freeTypeEngine.render(renderStream.str().c_str(), -1 + 10 * sx, 1 - 30 * sy, sx, sy);
+
+	renderStream = std::stringstream();
+	renderStream << cube.orientation;
+	freeTypeEngine.render(renderStream.str().c_str(), -1 + 180 * sx, 1 - 30 * sy, sx, sy);
+
+	/*renderStream = std::stringstream();
 	renderStream << "Time: ";
 	freeTypeEngine.render(renderStream.str().c_str(), -1 + 10 * sx, 1 - 30 * sy, sx, sy);
 
@@ -286,5 +294,5 @@ void Graphics::draw()
 	renderStream = std::stringstream();
 	renderStream << frameSpeed;
 	renderStream << "x";
-	freeTypeEngine.render(renderStream.str().c_str(), -1 + 180 * sx, 1 - 270 * sy, sx, sy);
+	freeTypeEngine.render(renderStream.str().c_str(), -1 + 180 * sx, 1 - 270 * sy, sx, sy);*/
 }
