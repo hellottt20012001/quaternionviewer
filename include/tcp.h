@@ -6,6 +6,14 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 
+namespace boost {
+    namespace detail {
+        namespace win32 {
+            struct _SECURITY_ATTRIBUTES: public ::_SECURITY_ATTRIBUTES {};
+        };
+    };
+}; 
+
 #include <quaternion.h>
 
 class TCPsession
