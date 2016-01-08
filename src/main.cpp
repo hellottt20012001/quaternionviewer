@@ -2,6 +2,7 @@
 #include <thread>
 
 #include <graphics.h>
+#include <tcp.h>
 #include <quatview.h>
 
 using namespace std;
@@ -27,7 +28,7 @@ void printInfo()
 int main(int argc, char* argv[])
 {
 	std::cout << "##### Quaterinon Viewer\n";
-	std::cout << "##### 2016/1/1 NEW YEAR EDITION\n";
+	std::cout << "##### 2016/1/8\n";
 	std::cout << "##### by En Shih (seanstone5923@gmail.com)\n\n";
 
 	Graphics graphics;
@@ -36,8 +37,12 @@ int main(int argc, char* argv[])
 
 	printInfo();
 
+	TCPserver tcpServer(1234, &graphics);
+	std::thread tcpSeverThread(std::ref(tcpServer));
 	std::thread graphicsThread(std::ref(graphics));
 	graphicsThread.join();
+	tcpServer.stop();
+	tcpSeverThread.join();
 
     return 0;
 }

@@ -1,5 +1,6 @@
 import socket
 import struct
+from math import cos, sin
 
 ## Quaternion class
 class quat:
@@ -27,6 +28,8 @@ class TCPsender:
 
 tcpSender = TCPsender(1234) # Port 1234
 
-# Example: quaternion (1.0, 2.0, 3.0, 4.0)
-q = quat(1.0, 0.0, 0.0, 0.0)
-tcpSender.sendQuat(q)
+x = 0
+while 1:
+    q = quat(1.0, cos(x), sin(x), 0.0)
+    tcpSender.sendQuat(q)
+    x += 0.0001

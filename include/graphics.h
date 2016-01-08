@@ -5,7 +5,7 @@
 
 #include <thread>
 
-#define GLFW_DLL
+//#define GLFW_DLL
 #include <GLFW/glfw3.h>
 
 #include <shader.h>
@@ -13,7 +13,6 @@
 #include <object.h>
 #include <quatview.h>
 #include <text.h>
-#include <tcp.h>
 
 class Graphics
 {
@@ -32,8 +31,6 @@ class Graphics
 
     public:
 
-		TCPserver tcpServer;
-
 		float frameSpeed = 8;
 		Data data;
 
@@ -43,19 +40,11 @@ class Graphics
 		void inputs();
         void draw();
 
-        Graphics() : tcpServer(1234) {}
+        Graphics() {}
         ~Graphics() { glfwTerminate(); }
 
-		void operator()()
-		{
-			if(init())
-			{
-				std::thread tcpSeverThread(std::ref(tcpServer));
-				loop();
-				tcpServer.stop();
-				tcpSeverThread.join();
-			}
-		}
+		void operator()() { if(init()) loop(); }
+		void setOrientation(quat q) { cube.orientation = q; glfwPostEmptyEvent(); }
 };
 
 #endif // GRAPHICS_H_INCLUDED

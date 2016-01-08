@@ -10,18 +10,23 @@ namespace boost {
     namespace detail {
         namespace win32 {
             struct _SECURITY_ATTRIBUTES: public ::_SECURITY_ATTRIBUTES {};
-        };
-    };
-}; 
+        }
+    }
+}
 
 #include <quaternion.h>
+
+class Graphics;
+#include <graphics.h>
 
 class TCPsession
 {
 public:
 	boost::asio::ip::tcp::socket socket;
 	quat* orientation;
-	TCPsession(boost::asio::io_service& io_service, quat* q) : socket(io_service), orientation(q) {}
+	Graphics* graphics;
+
+	TCPsession(boost::asio::io_service& io_service, quat* q, Graphics* g) : socket(io_service), orientation(q), graphics(g) {}
 
 	void start_read()
 	{
@@ -43,9 +48,7 @@ private:
 			buffer[4] = read[0];
 
 			if(buffer[0] == 9999.0)
-			{
-				*orientation = quat(buffer[1], buffer[2], buffer[3], buffer[4]);
-			}
+				graphics->setOrientation(quat(buffer[1], buffer[2], buffer[3], buffer[4]));
 
 			start_read();
 		}
@@ -58,7 +61,7 @@ class TCPserver
 private:
   	void start_accept()
   	{
-		session = new TCPsession(io_service, &orientation);
+		session = new TCPsession(io_service, &orientation, graphics);
 		acceptor.async_accept(session->socket, boost::bind(&TCPserver::handle_accept, this, session, boost::asio::placeholders::error));
   	}
 
@@ -74,15 +77,16 @@ private:
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::acceptor acceptor;
 	TCPsession* session;
+	Graphics* graphics;
 
 public:
-  	TCPserver(int PORT) : acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT)) { }
+  	TCPserver(int PORT, Graphics* g) : acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT)), graphics(g) { }
 
 	void operator()()
 	{
 		try
 		{
-			std::cout<< "Server starting";
+			std::cout<< "Server starting\n";
 			start_accept();
 			io_service.run();
 		}

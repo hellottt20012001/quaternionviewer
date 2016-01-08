@@ -65,9 +65,8 @@ void Graphics::loop()
 		std::cout << "\t";
 
 		std::cout << "     \xd";*/
-		cube.orientation = tcpServer.orientation;
 		draw();
-        glfwSwapBuffers(Window); glfwPollEvents();
+        glfwSwapBuffers(Window); glfwWaitEvents();
     }
     while(glfwGetKey(Window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Window) == 0);
 }

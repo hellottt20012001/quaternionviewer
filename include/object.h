@@ -10,7 +10,7 @@ class Object
 {
 public:
 	GLuint VAO;
-	void init() {  genBuffers(); }
+	void init() { genBuffers(); }
 	~Object() { deleteBuffers(); }
 	virtual void genBuffers() {}
 	virtual void deleteBuffers() {}

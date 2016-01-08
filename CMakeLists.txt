@@ -11,7 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 link_directories(${CMAKE_BINARY_DIR}/..)
 
 # setup some flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math -std=c++11 -Wall -W -pedantic -Wextra -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math -std=c++11 -Wall -W -pedantic -Wextra -pthread -static")
 
 # Sources
 file(GLOB SOURCES "src/*.cpp" "src/*.c")
