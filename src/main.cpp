@@ -33,16 +33,17 @@ int main(int argc, char* argv[])
 
 	Graphics graphics;
 	if(argc > 1) { if(!graphics.data.readFromCSV(argv[1])) return 0; }
-	//else { if(!graphics.data.readFromCSV("AS.csv")) return 0; }
+	else { if(!graphics.data.readFromCSV("AS.csv")) return 0; }
 
 	printInfo();
 
-	TCPserver tcpServer(1234, &graphics);
-	std::thread tcpSeverThread(std::ref(tcpServer));
-	std::thread graphicsThread(std::ref(graphics));
-	graphicsThread.join();
-	tcpServer.stop();
-	tcpSeverThread.join();
+	//TCPserver tcpServer(1234, &graphics);
+	//std::thread tcpSeverThread(std::ref(tcpServer));
+	//std::thread graphicsThread(std::ref(graphics));
+	//graphicsThread.join();
+	//tcpServer.stop();
+	//tcpSeverThread.join();
+	if(graphics.init()) graphics.loop();
 
     return 0;
 }

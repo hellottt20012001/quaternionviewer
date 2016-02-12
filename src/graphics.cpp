@@ -15,7 +15,7 @@ int Graphics::init()
 	printf("Renderer: %s\n", Renderer);
 	printf("OpenGL version %s\n\n", Version);
 
-	//time = data[0].Time;
+	time = data[0].Time;
 
 	program.load(); std::cout << "Program loaded\n";
 	cube.createCube(); std::cout << "Cube created\n";
@@ -51,7 +51,7 @@ void Graphics::loop()
     {
         inputs();
 
-		/*std::cout << "Time: ";
+		std::cout << "Time: ";
 		int hr = time / 3600, min = (time % 3600) / 60, sec = time % 60;
 		std::cout << hr << ":";
 		if(min < 10) std::cout << "0";
@@ -64,9 +64,10 @@ void Graphics::loop()
 		std::cout << data[frame].Package_NO;
 		std::cout << "\t";
 
-		std::cout << "     \xd";*/
+		std::cout << "     \xd";
+		setOrientation(data[frame].Orientation);
 		draw();
-        glfwSwapBuffers(Window); glfwWaitEvents();
+        glfwSwapBuffers(Window); glfwPollEvents();
     }
     while(glfwGetKey(Window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Window) == 0);
 }
@@ -91,7 +92,7 @@ void Graphics::inputs()
 	else if(glfwGetKey(Window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		view.setRightView();
 
-	/*if(glfwGetKey(Window, GLFW_KEY_A) == GLFW_PRESS && time < data[data.size()-1].Time)
+	if(glfwGetKey(Window, GLFW_KEY_A) == GLFW_PRESS && time < data[data.size()-1].Time)
 	{
 		static float lastTime_KEY_A = glfwGetTime();
 		float currentTime = glfwGetTime();
@@ -155,7 +156,7 @@ void Graphics::inputs()
 			time = data[frame].Time;
 			lastTime_KEY_PAGEUP= currentTime;
 		}
-	}*/
+	}
 }
 
 void Graphics::draw()
@@ -171,14 +172,14 @@ void Graphics::draw()
  	float sy = 2.0 / height;
 	std::stringstream renderStream;
 
-	/*freeTypeEngine.render("Press HOME to go to start of data.", -1 + 680 * sx, 1 - 30 * sy, sx, sy);
+	freeTypeEngine.render("Press HOME to go to start of data.", -1 + 680 * sx, 1 - 30 * sy, sx, sy);
 	freeTypeEngine.render("Press END to go to end of data.", -1 + 680 * sx, 1 - 50 * sy, sx, sy);
 	freeTypeEngine.render("Press PAGE UP to go back 100 frames.", -1 + 680 * sx, 1 - 70 * sy, sx, sy);
 	freeTypeEngine.render("Press PAGE DOWN to go forward 100 frames.", -1 + 680 * sx, 1 - 90 * sy, sx, sy);
 
 	freeTypeEngine.render("Press A/Z to play forward/backward.", -1 + 720 * sx, 1 - 130 * sy, sx, sy);
 	freeTypeEngine.render("Press S/X to adjust playback speed.", -1 + 720 * sx, 1 - 150 * sy, sx, sy);
-	freeTypeEngine.render("Hold RIGHT mouse button to rotate view.", -1 + 720 * sx, 1 - 170 * sy, sx, sy);*/
+	freeTypeEngine.render("Hold RIGHT mouse button to rotate view.", -1 + 720 * sx, 1 - 170 * sy, sx, sy);
 
 	freeTypeEngine.render("Press DOWN = FRONT view.", -1 + 800 * sx, 1 - 30 * sy, sx, sy);
 	freeTypeEngine.render("Press UP = BACK view.", -1 + 800 * sx, 1 - 50 * sy, sx, sy);
@@ -201,7 +202,7 @@ void Graphics::draw()
 	renderStream << cube.orientation;
 	freeTypeEngine.render(renderStream.str().c_str(), -1 + 180 * sx, 1 - 30 * sy, sx, sy);
 
-	/*renderStream = std::stringstream();
+	renderStream = std::stringstream();
 	renderStream << "Time: ";
 	freeTypeEngine.render(renderStream.str().c_str(), -1 + 10 * sx, 1 - 30 * sy, sx, sy);
 
@@ -293,5 +294,5 @@ void Graphics::draw()
 	renderStream = std::stringstream();
 	renderStream << frameSpeed;
 	renderStream << "x";
-	freeTypeEngine.render(renderStream.str().c_str(), -1 + 180 * sx, 1 - 270 * sy, sx, sy);*/
+	freeTypeEngine.render(renderStream.str().c_str(), -1 + 180 * sx, 1 - 270 * sy, sx, sy);
 }
