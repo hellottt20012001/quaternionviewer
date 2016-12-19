@@ -1,1 +1,0 @@
-.\QuaternionViewer.exe AS_log15_41_01.csv
