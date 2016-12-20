@@ -19,15 +19,12 @@ public:
 	MainWindow();
 	~MainWindow();
 	void render();
-
 	void update();
 
 protected:
 	Renderer renderer;
 	Mesh* mesh;
-	Model* model;
 	ThreeDShader* shader;
-	ThreeDShader* normalShader;
 	Texture* texture;
 	Camera* camera;
 	SceneNode* rootNode;
@@ -48,7 +45,7 @@ MainWindow::MainWindow()
 	Projection projection;
 	projection.setProjection(radians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 50.0f);
 
-	camera = new Camera(vec3(0,5,5), vec3(0,0,-1), vec3(0,1,0));
+	camera = new Camera();
 	camera->lookAt(vec3(0,-5,5), vec3(0,0,0), vec3(0,0,1));
 	camera->setProjection(projection);
 }
@@ -74,23 +71,23 @@ void MainWindow::initMeshItem()
 	GLfloat vertices[] =
 	{
 		// top
-		-1.0f, 1.0f, 0.5f,		-1.0f,-1.0f, 0.5f,		1.0f,-1.0f, 0.5f,
-		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f, 0.5f,		1.0f,-1.0f, 0.5f,
+		-1., 1., 1.,		-1.,-1., 1.,		1.,-1., 1.,
+		1., 1., 1.,		-1., 1., 1.,		1.,-1., 1.,
 		// bottom
-		1.0f, 1.0f,-0.5f,		-1.0f,-1.0f,-0.5f,		-1.0f, 1.0f,-0.5f,
-		1.0f, 1.0f,-0.5f,		1.0f,-1.0f,-0.5f,		-1.0f,-1.0f,-0.5f,
+		1., 1.,-1.,		-1.,-1.,-1.,		-1., 1.,-1.,
+		1., 1.,-1.,		 1.,-1.,-1.,		-1.,-1.,-1.,
 		// left
-		-1.0f,-1.0f,-0.5f,		-1.0f, 1.0f, 0.5f,		-1.0f, 1.0f,-0.5f,
-		-1.0f,-1.0f,-0.5f,		-1.0f,-1.0f, 0.5f,		-1.0f, 1.0f, 0.5f,
+		-1.,-1.,-1.,		-1., 1., 1.,		-1., 1.,-1.,
+		-1.,-1.,-1.,		-1.,-1., 1.,		-1., 1., 1.,
 		// right
-		1.0f,-1.0f,-0.5f,		1.0f, 1.0f, 0.5f,		1.0f,-1.0f, 0.5f,
-		1.0f, 1.0f, 0.5f,		1.0f,-1.0f,-0.5f,		1.0f, 1.0f,-0.5f,
+		1.,-1.,-1.,		 1., 1., 1.,		1.,-1., 1.,
+		1., 1., 1.,		 1.,-1.,-1.,		1., 1.,-1.,
 		// front
-		1.0f, -1.0f, 0.5f,		1.0f, -1.0f,-0.5f,		-1.0f, -1.0f,-0.5f,
-		1.0f, -1.0f, 0.5f,		-1.0f, -1.0f,-0.5f,		-1.0f, -1.0f, 0.5f,
+		1., -1., 1.,		 1., -1.,-1.,		-1., -1.,-1.,
+		1., -1., 1.,		-1., -1.,-1.,		-1., -1., 1.,
 		// back
-		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f, 0.5f,		-1.0f,1.0f,-0.5f,
-		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f,-0.5f,		1.0f,1.0f,-0.5f
+		1., 1., 1.,		-1.,  1., 1.,		-1.,1.,-1.,
+		1., 1., 1.,		-1.,  1.,-1.,		1.,1.,-1.
 	};
 
 	GLfloat normals[36 * 3];
@@ -134,9 +131,7 @@ void MainWindow::initMeshItem()
 MainWindow::~MainWindow()
 {
 	delete shader;
-	delete normalShader;
 	delete mesh;
-	delete model;
 	delete camera;
 	delete texture;
 	delete rootNode;
@@ -149,19 +144,14 @@ void MainWindow::render()
 	renderer.initFrame();
 
 	static float val = 0;
-	static float scal = 1;
 
 	Transform transform;
 
-	//transform.scale(vec3(1,1,1));
-	//transform.translate(vec3(0,0,0));
-	//transform.rotate(vec3(cos(val*3.14)*3.14,sin(val*3.14)*3.14,0));
-
+	transform.scale(vec3(2,2,1));
 	transform.rotate(vec3(0,val*3.14f,0));
+	val += 0.004;
 
 	rootNode->setTransform(transform);
-
-	val += 0.004*scal;
 	rootNode->render(camera);
 }
 
@@ -169,25 +159,6 @@ void MainWindow::update()
 {
 	static vec2 lastMousePos = getMousePos();
 
-	float moveSpeed = 0.025;
-	//Move Camera
-	if(getKeyState(Key::W) == true)
-		camera->move(camera->getDirection()*moveSpeed);
-	if(getKeyState(Key::S) == true)
-		camera->move(-camera->getDirection()*moveSpeed);
-	if(getKeyState(Key::D) == true)
-		camera->move(camera->getRight()*moveSpeed);
-	if(getKeyState(Key::A) == true)
-		camera->move(-camera->getRight()*moveSpeed);
-	if(getKeyState(Key::E) == true)
-		camera->move(camera->getUp()*moveSpeed);
-	if(getKeyState(Key::C) == true)
-		camera->move(-camera->getUp()*moveSpeed);
-
-	//if(getKeyState(Key::Esc) == true)
-	// 	exit(0);
-
-	//Mouse movements
 	vec2 mousePos = getMousePos();
 	if(getMouseState(Button::ButtonLeft) == true)
 	{
@@ -200,12 +171,8 @@ void MainWindow::update()
 		vec3 position =  rotor * camera->getPosition() * ~rotor;
 		camera->setDirection(direction);
 		camera->setPosition(position);
-
-		//cout << direction.x << "\t" << direction.y << "\t" << direction.z << endl;
 	}
 	lastMousePos = mousePos;
-
-	//cout << camera->getPosition().y << endl;
 }
 
 int main()
