@@ -8021,8 +8021,8 @@ f 500//2012 1828//1501 1257//1512
 f 500//2012 1257//1512 1826//1476
 f 500//2012 1826//1476 1332//1666
 f 500//2012 1332//1666 1896//1596
-f 500//2012 1896//1596 1473//1948//#version 330 core
-#define WEBGL
+f 500//2012 1896//1596 1473//1948#version 330 core
+//#define WEBGL
 #ifdef WEBGL
 precision mediump float;
 #endif
@@ -8141,8 +8141,8 @@ void main()
 	else
 		color = textureColor;
 }
-//#version 330 core
-#define WEBGL
+#version 330 core
+//#define WEBGL
 #ifdef WEBGL
 precision mediump float;
 #endif

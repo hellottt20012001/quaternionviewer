@@ -48,7 +48,8 @@ MainWindow::MainWindow()
 	Projection projection;
 	projection.setProjection(radians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 50.0f);
 
-	camera = new Camera(vec3(0,0.1,3), vec3(0,0,-1), vec3(0,1,0));
+	camera = new Camera(vec3(0,5,5), vec3(0,0,-1), vec3(0,1,0));
+	camera->lookAt(vec3(0,5,5), vec3(0,0,0), vec3(0,1,0));
 	camera->setProjection(projection);
 }
 
@@ -70,26 +71,60 @@ void MainWindow::initMeshItem()
 	shader->setParameter("pointLight.radiant",vec3(3.0f));
 	shader->Shader::unbind();
 
+	const float d = 5;
+
 	GLfloat vertices[] =
 	{
-		-5,0,-5,
-		-5,0,5,
-		5,0,5,
-		5,0,-5
+		// top
+		-1.0f, 1.0f, 0.5f,		-1.0f,-1.0f, 0.5f,		1.0f,-1.0f, 0.5f,
+		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f, 0.5f,		1.0f,-1.0f, 0.5f,
+		// bottom
+		1.0f, 1.0f,-0.5f,		-1.0f,-1.0f,-0.5f,		-1.0f, 1.0f,-0.5f,
+		1.0f, 1.0f,-0.5f,		1.0f,-1.0f,-0.5f,		-1.0f,-1.0f,-0.5f,
+		// left
+		-1.0f,-1.0f,-0.5f,		-1.0f, 1.0f, 0.5f,		-1.0f, 1.0f,-0.5f,
+		-1.0f,-1.0f,-0.5f,		-1.0f,-1.0f, 0.5f,		-1.0f, 1.0f, 0.5f,
+		// right
+		1.0f,-1.0f,-0.5f,		1.0f, 1.0f, 0.5f,		1.0f,-1.0f, 0.5f,
+		1.0f, 1.0f, 0.5f,		1.0f,-1.0f,-0.5f,		1.0f, 1.0f,-0.5f,
+		// front
+		1.0f, -1.0f, 0.5f,		1.0f, -1.0f,-0.5f,		-1.0f, -1.0f,-0.5f,
+		1.0f, -1.0f, 0.5f,		-1.0f, -1.0f,-0.5f,		-1.0f, -1.0f, 0.5f,
+		// back
+		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f, 0.5f,		-1.0f,1.0f,-0.5f,
+		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f,-0.5f,		1.0f,1.0f,-0.5f
 	};
 
 	GLfloat normals[] =
 	{
-		0,1,0,
-		0,1,0,
-		0,1,0,
-		0,1,0
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
 	};
 
 	GLuint indices[] =
 	{
-		0,1,2,
-		2,3,0
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+		9, 10, 11,
+		12, 13, 14,
+		15, 16, 17,
+		18, 19, 20,
+		21, 22, 23,
+		24, 25, 26,
+		27, 28, 29,
+		30, 31, 32,
+		33, 34, 35
 	};
 
 	GLfloat uv[] =
@@ -97,14 +132,22 @@ void MainWindow::initMeshItem()
 		0,0,
 		0,1,
 		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
 		1,0
 	};
 
 	mesh = new Mesh;
-	mesh->setVertices((vec3*)vertices, 4);
-	mesh->setIndices(indices, 6);
-	mesh->setTextureCoord((vec2*)uv, 8);
-	mesh->setNormals((vec3*)normals, 4);
+	mesh->setVertices((vec3*)vertices, 36);
+	mesh->setIndices(indices, 36);
+	mesh->setTextureCoord((vec2*)uv, 12);
+	mesh->setNormals((vec3*)normals, 12);
 
 	Image image;
 	image.load("data/texture/planks_oak.png");
@@ -144,7 +187,8 @@ void MainWindow::render()
 	//transform.scale(vec3(1,1,1));
 	//transform.translate(vec3(0,0,0));
 	//transform.rotate(vec3(cos(val*3.14)*3.14,sin(val*3.14)*3.14,0));
-	transform.rotate(vec3(0,val*3.14f,0));
+
+	//transform.rotate(vec3(0,val*3.14f,0));
 
 	rootNode->setTransform(transform);
 
@@ -181,10 +225,12 @@ void MainWindow::update()
 		vec2 diff = mousePos - lastMousePos;
 
 		Quatf rotateVector = diff.x * camera->getUp() + diff.y * camera->getRight();
-		Quatf rotor = exp(0.003 * rotateVector);
+		Quatf rotor = ~ exp(0.003 * rotateVector);
 
 		vec3 direction =  rotor * camera->getDirection() * ~rotor;
+		vec3 position =  rotor * camera->getPosition() * ~rotor;
 		camera->setDirection(direction);
+		camera->setPosition(position);
 
 		//cout << direction.x << "\t" << direction.y << "\t" << direction.z << endl;
 	}
