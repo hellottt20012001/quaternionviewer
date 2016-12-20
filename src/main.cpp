@@ -49,7 +49,7 @@ MainWindow::MainWindow()
 	projection.setProjection(radians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 50.0f);
 
 	camera = new Camera(vec3(0,5,5), vec3(0,0,-1), vec3(0,1,0));
-	camera->lookAt(vec3(0,5,5), vec3(0,0,0), vec3(0,1,0));
+	camera->lookAt(vec3(0,-5,5), vec3(0,0,0), vec3(0,0,1));
 	camera->setProjection(projection);
 }
 
@@ -70,8 +70,6 @@ void MainWindow::initMeshItem()
 	shader->setParameter("pointLight.position",vec3(3, 2, 0));
 	shader->setParameter("pointLight.radiant",vec3(3.0f));
 	shader->Shader::unbind();
-
-	const float d = 5;
 
 	GLfloat vertices[] =
 	{
@@ -95,101 +93,24 @@ void MainWindow::initMeshItem()
 		1.0f, 1.0f, 0.5f,		-1.0f, 1.0f,-0.5f,		1.0f,1.0f,-0.5f
 	};
 
-	GLfloat normals[] =
+	GLfloat normals[36 * 3];
+	for (int i = 0; i < 36; i++)
 	{
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-		0,0,1,
-	};
+		normals[i*3] = 0;
+		normals[i*3 + 1] = 0;
+		normals[i*3 + 2] = 1;
+	}
 
-	GLuint indices[] =
-	{
-		0, 1, 2,
-		3, 4, 5,
-		6, 7, 8,
-		9, 10, 11,
-		12, 13, 14,
-		15, 16, 17,
-		18, 19, 20,
-		21, 22, 23,
-		24, 25, 26,
-		27, 28, 29,
-		30, 31, 32,
-		33, 34, 35
-	};
+	GLuint indices[36];
+	for (int i = 0; i < 36; i++)
+		indices[i] = i;
 
-	GLfloat uv[] =
+	GLfloat uv[36 * 2];
+	for (int i = 0; i < 36; i++)
 	{
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-		1,0
-	};
+		uv[i*2] 	= 0;
+		uv[i*2+1] 	= 0;
+	}
 
 	mesh = new Mesh;
 	mesh->setVertices((vec3*)vertices, 36);
@@ -236,7 +157,7 @@ void MainWindow::render()
 	//transform.translate(vec3(0,0,0));
 	//transform.rotate(vec3(cos(val*3.14)*3.14,sin(val*3.14)*3.14,0));
 
-	//transform.rotate(vec3(0,val*3.14f,0));
+	transform.rotate(vec3(0,val*3.14f,0));
 
 	rootNode->setTransform(transform);
 
