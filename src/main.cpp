@@ -109,6 +109,30 @@ void MainWindow::initMeshItem()
 		0,0,1,
 		0,0,1,
 		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
+		0,0,1,
 	};
 
 	GLuint indices[] =
@@ -140,14 +164,38 @@ void MainWindow::initMeshItem()
 		0,0,
 		0,1,
 		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
 		1,0
 	};
 
 	mesh = new Mesh;
 	mesh->setVertices((vec3*)vertices, 36);
 	mesh->setIndices(indices, 36);
-	mesh->setTextureCoord((vec2*)uv, 12);
-	mesh->setNormals((vec3*)normals, 12);
+	mesh->setTextureCoord((vec2*)uv, 36);
+	mesh->setNormals((vec3*)normals, 36);
 
 	Image image;
 	image.load("data/texture/planks_oak.png");
