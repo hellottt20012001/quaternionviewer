@@ -46,7 +46,7 @@ MainWindow::MainWindow()
 	projection.setProjection(radians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 50.0f);
 
 	camera = new Camera();
-	camera->lookAt(vec3(0,-5,5), vec3(0,0,0), vec3(0,0,1));
+	camera->lookAt(vec3(0,-8,8), vec3(0,0,0), vec3(0,0,1));
 	camera->setProjection(projection);
 }
 
@@ -57,46 +57,60 @@ void MainWindow::initMeshItem()
 	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
 	result &= shader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= shader->compile();
-	if(result == false)
+	if(!result)
 	{
 		terminate();
 		exit(0);
 	}
 
 	shader->Shader::bind();
-	shader->setParameter("pointLight.position",vec3(3, 2, 0));
-	shader->setParameter("pointLight.radiant",vec3(3.0f));
+	shader->setParameter("pointLight.position",vec3(0, -10, 10));
+	shader->setParameter("pointLight.radiant",vec3(50.0f));
+	shader->setParameter("ambient",vec3(10.f/255));
 	shader->Shader::unbind();
 
 	GLfloat vertices[] =
 	{
-		// top
-		-1., 1., 1.,		-1.,-1., 1.,		1.,-1., 1.,
-		1., 1., 1.,		-1., 1., 1.,		1.,-1., 1.,
-		// bottom
-		1., 1.,-1.,		-1.,-1.,-1.,		-1., 1.,-1.,
-		1., 1.,-1.,		 1.,-1.,-1.,		-1.,-1.,-1.,
-		// left
-		-1.,-1.,-1.,		-1., 1., 1.,		-1., 1.,-1.,
-		-1.,-1.,-1.,		-1.,-1., 1.,		-1., 1., 1.,
-		// right
-		1.,-1.,-1.,		 1., 1., 1.,		1.,-1., 1.,
-		1., 1., 1.,		 1.,-1.,-1.,		1., 1.,-1.,
-		// front
-		1., -1., 1.,		 1., -1.,-1.,		-1., -1.,-1.,
-		1., -1., 1.,		-1., -1.,-1.,		-1., -1., 1.,
-		// back
-		1., 1., 1.,		-1.,  1., 1.,		-1.,1.,-1.,
-		1., 1., 1.,		-1.,  1.,-1.,		1.,1.,-1.
+		1.0f, 1.0f,-1.0f,	-1.0f,-1.0f,-1.0f,	-1.0f, 1.0f,-1.0f,
+		1.0f, 1.0f,-1.0f,	1.0f,-1.0f,-1.0f,	-1.0f,-1.0f,-1.0f,
+
+		-1.0f, 1.0f, 1.0f,	-1.0f,-1.0f, 1.0f,	1.0f,-1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,	-1.0f, 1.0f, 1.0f,	1.0f,-1.0f, 1.0f,
+
+		-1.0f,-1.0f,-1.0f,	-1.0f,-1.0f, 1.0f,	-1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,	-1.0f, 1.0f, 1.0f,	-1.0f, 1.0f,-1.0f,
+
+		1.0f, 1.0f, 1.0f,	1.0f,-1.0f,-1.0f,	1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,	1.0f, 1.0f, 1.0f,	1.0f,-1.0f, 1.0f,
+
+   		1.0f,-1.0f, 1.0f,	-1.0f,-1.0f,-1.0f,	1.0f,-1.0f,-1.0f,
+   		1.0f,-1.0f, 1.0f,	-1.0f,-1.0f, 1.0f,	-1.0f,-1.0f,-1.0f,
+
+   		1.0f, 1.0f, 1.0f,	1.0f, 1.0f,-1.0f,	-1.0f, 1.0f,-1.0f,
+   		1.0f, 1.0f, 1.0f,	-1.0f, 1.0f,-1.0f,	-1.0f, 1.0f, 1.0f,
 	};
 
-	GLfloat normals[36 * 3];
-	for (int i = 0; i < 36; i++)
+	GLfloat normals[] =
 	{
-		normals[i*3] = 0;
-		normals[i*3 + 1] = 0;
-		normals[i*3 + 2] = 1;
-	}
+		// bottom
+		0., 0., -1.,	0., 0., -1.,		0., 0., -1.,
+		0., 0., -1.,	0., 0., -1.,		0., 0., -1.,
+		// top
+		0., 0., 1.,		0., 0., 1.,			0., 0., 1.,
+		0., 0., 1.,		0., 0., 1.,			0., 0., 1.,
+		// left
+		-1.,0.,0.,		-1.,0.,0.,			-1.,0.,0.,
+		-1.,0.,0.,		-1.,0.,0.,			-1.,0.,0.,
+		// right
+		1.,0.,0.,		 1.,0.,0.,			1.,0.,0.,
+		1.,0.,0.,		 1.,0.,0.,			1.,0.,0.,
+		// front
+		0., -1., 0.,	 0., -1., 0.,		0., -1., 0.,
+		0., -1., 0.,	 0., -1., 0.,		0., -1., 0.,
+		// back
+		0., 1., 0.,		 0., 1., 0.,		0., 1., 0.,
+		0., 1., 0.,		 0., 1., 0.,		0., 1., 0.,
+	};
 
 	GLuint indices[36];
 	for (int i = 0; i < 36; i++)
@@ -115,10 +129,19 @@ void MainWindow::initMeshItem()
 	mesh->setTextureCoord((vec2*)uv, 36);
 	mesh->setNormals((vec3*)normals, 36);
 
-	Image image;
-	image.load("data/texture/planks_oak.png");
+	vec4 colors[4] =
+	{
+		vec4(1, 1, 0, 1),
+		vec4(255, 0, 255, 255),
+		vec4(0, 255, 255, 255),
+		vec4(255, 255, 255, 255)
+	};
+
+	//Image image;
+	//image.load("data/texture/planks_oak.png");
 	texture = new Texture;
-	texture->load(&image);
+	//texture->load(&image);
+	texture->fromRaw(colors, 2, 2);
 	texture->enableMipmap(false);
 	shader->setTexture(texture);
 

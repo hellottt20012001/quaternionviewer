@@ -51,8 +51,11 @@ elseif(WIN32)
 endif()
 
 # Copy data
-ADD_CUSTOM_TARGET(link_target ALL COMMAND ${CMAKE_COMMAND} -E
+add_custom_target(link_target ALL COMMAND ${CMAKE_COMMAND} -E
 	create_symlink ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data)
 if(EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --preload-file ${CMAKE_SOURCE_DIR}/data@/data")
 endif()
+# file(GLOB data_files "${CMAKE_BINARY_DIR}/data/*/*")
+# add_custom_target(data_target DEPENDS data_files)
+# add_dependencies(attvis data_target)
