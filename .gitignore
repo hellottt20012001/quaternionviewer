@@ -3,7 +3,6 @@ build/
 build*/
 lib/
 obj/
-dist/
 *.o
 *.so
 

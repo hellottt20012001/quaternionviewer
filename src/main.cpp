@@ -10,7 +10,7 @@ using namespace Pulsar;
 #include <string>
 using namespace std;
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 800
 
 class MainWindow : public Window
@@ -41,7 +41,7 @@ protected:
 
 MainWindow::MainWindow()
 {
-	createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "PulsarEngine Example");
+	createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Attitude Visualizer");
 
 	renderer.init();
 	renderer.setClearColor(vec3(135, 206, 250)/255.f);
