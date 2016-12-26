@@ -23,7 +23,6 @@ public:
 
 protected:
 	Renderer 		renderer;
-	ThreeDShader* 	shader;
 	SceneNode* 		rootNode;
 	Camera* 		camera;
 	Texture* 		texture;
@@ -31,12 +30,18 @@ protected:
 	SceneMeshItem* 	cube;
 	Mesh* 			plateMesh;
 	SceneMeshItem* 	plate;
+	Mesh* 			triangleMesh;
+	SceneMeshItem* 	triangle;
 
 	void initShader();
 	void initTexture();
 	void initCamera();
 	void initCube();
 	void initPlate();
+	void initTriangle();
+public:
+	ThreeDShader* 	shader;
+	void setRotation(Quatf rotor);
 };
 
 MainWindow::MainWindow()
@@ -53,6 +58,7 @@ MainWindow::MainWindow()
 	rootNode = new SceneNode;
 	initCube();
 	initPlate();
+	initTriangle();
 }
 
 void MainWindow::initShader()
@@ -76,7 +82,7 @@ void MainWindow::initShader()
 
 void MainWindow::initTexture()
 {
-	vec4 colors[8] =
+	vec4 colors[16] =
 	{
 		vec4(255, 213, 0, 255) / 255.f,
 		vec4(255, 255, 255, 255) / 255.f,
@@ -85,10 +91,11 @@ void MainWindow::initTexture()
 		vec4(0, 158, 96, 255) / 255.f,
 		vec4(0, 81, 186, 255) / 255.f,
 		vec4(0, 255, 0, 255) / 255.f,
+		vec4(255, 0, 0, 255) / 255.f,
 	};
 
 	texture = new Texture;
-	texture->fromRaw(colors, 8, 1);
+	texture->fromRaw(colors, 16, 1);
 	texture->enableMipmap(false);
 	shader->setTexture(texture);
 }
@@ -159,21 +166,21 @@ void MainWindow::initCube()
 		0., 0.,		0., 0.,		0., 0.,
 		0., 0.,		0., 0.,		0., 0.,
 		// top
-		.125, .0,	.125, .0,	.125, .0,
-		.125, .0,	.125, .0,	.125, .0,
+		1/16., .0,	1/16., .0,	1/16., .0,
+		1/16., .0,	1/16., .0,	1/16., .0,
 		// left
-		.25, 0.,	.25, 0.,	.25, 0.,
-		.25, 0.,	.25, 0.,	.25, 0.,
+		2/16., 0.,	2/16., 0.,	2/16., 0.,
+		2/16., 0.,	2/16., 0.,	2/16., 0.,
 		// right
-		.375, 0.,	.375, 0.,	.375, 0.,
-		.375, 0.,	.375, 0.,	.375, 0.,
+		3/16., 0.,	3/16., 0.,	3/16., 0.,
+		3/16., 0.,	3/16., 0.,	3/16., 0.,
 		// front
-		.5, 0.,		.5, 0.,		.5, 0.,
-		.5, 0.,		.5, 0.,		.5, 0.,
+		4/16., 0.,	4/16., 0.,	4/16., 0.,
+		4/16., 0.,	4/16., 0.,	4/16., 0.,
 		// back
-		.625, 0.,	.625, 0.,	.625, 0.,
-		.625, 0.,	.625, 0.,	.625, 0.,
-	};
+		5/16., 0.,	5/16., 0.,	5/16., 0.,
+		5/16., 0.,	5/16., 0.,	5/16., 0.,
+	}  ;
 
 	cubeMesh = new Mesh;
 	cubeMesh->setVertices((vec3*)vertices, 36);
@@ -215,11 +222,11 @@ void MainWindow::initPlate()
 	GLfloat uv[] =
 	{
 		// bottom
-		.75, .0,	.75, .0,	.75, .0,
-		.75, .0,	.75, .0,	.75, .0,
+		6/16., 0.,	6/16., 0.,	6/16., 0.,
+		6/16., 0.,	6/16., 0.,	6/16., 0.,
 		// top
-		.75, .0,	.75, .0,	.75, .0,
-		.75, .0,	.75, .0,	.75, .0,
+		6/16., 0.,	6/16., 0.,	6/16., 0.,
+		6/16., 0.,	6/16., 0.,	6/16., 0.,
 	};
 
 	plateMesh = new Mesh;
@@ -233,6 +240,43 @@ void MainWindow::initPlate()
 	rootNode->addItem(plate);
 }
 
+void MainWindow::initTriangle()
+{
+	GLfloat vertices[] =
+	{
+		// bottom
+		-.5f, .0f,.0f,	.0f, 1.f, .0f,	.5f, .0f, .0f,
+		.5f, .0f,.0f,	.0f, 1.f, .0f,	-.5f, .0f, .0f,
+	};
+
+	GLfloat normals[] =
+	{
+		0., 0., -1.,	0., 0., -1.,		0., 0., -1.,
+		0., 0., 1.,		0., 0., 1.,			0., 0., 1.,
+	};
+
+	GLuint indices[6];
+	for (int i = 0; i < 6; i++)
+		indices[i] = i;
+
+	GLfloat uv[] =
+	{
+		// bottom
+		7/16., 0.,	7/16., 0.,	7/16., 0.,
+		7/16., 0.,	7/16., 0.,	7/16., 0.,
+	};
+
+	triangleMesh = new Mesh;
+	triangleMesh->setVertices((vec3*)vertices, 6);
+	triangleMesh->setIndices(indices, 6);
+	triangleMesh->setTextureCoord((vec2*)uv, 6);
+	triangleMesh->setNormals((vec3*)normals, 6);
+
+	triangle = new SceneMeshItem(triangleMesh);
+	triangle->setShader(shader);
+	rootNode->addItem(triangle);
+}
+
 MainWindow::~MainWindow()
 {
 	delete shader;
@@ -243,6 +287,8 @@ MainWindow::~MainWindow()
 	delete cube;
 	delete plateMesh;
 	delete plate;
+	delete triangleMesh;
+	delete triangle;
 }
 
 void MainWindow::render()
@@ -262,6 +308,11 @@ void MainWindow::render()
 	plateTransform.translate(vec3(0, 0, -3));
 	plate->setTransform(plateTransform);
 
+	Transform triangleTransform;
+	triangleTransform.scale(vec3(5, 7, 1));
+	triangleTransform.translate(vec3(0, 8, -3));
+	triangle->setTransform(triangleTransform);
+
 	rootNode->render(camera);
 }
 
@@ -277,17 +328,40 @@ void MainWindow::update()
 		Quatf rotateVector = diff.x * camera->getUp() + diff.y * camera->getRight();
 		Quatf rotor = exp(-0.003 * rotateVector);
 
+		float distance = length(camera->getPosition());
 		vec3 direction = rotor * camera->getDirection() * ~rotor;
 		vec3 position = rotor * camera->getPosition() * ~rotor;
+		position = distance * position / length(position);
 		camera->setDirection(direction);
 		camera->setPosition(position);
 	}
 	lastMousePos = mousePos;
 }
 
+void MainWindow::setRotation(Quatf rotor)
+{
+	float distance = length(camera->getPosition());
+	vec3 direction = rotor * camera->getDirection() * ~rotor;
+	vec3 position = rotor * camera->getPosition() * ~rotor;
+	position = distance * position / length(position);
+	camera->setDirection(direction);
+	camera->setPosition(position);
+}
+
+MainWindow window;
+
+extern "C" {
+
+void __attribute__((used)) setRotation(float w, float x, float y, float z)
+{
+	Quatf rotor = Quatf(w, x, y, z);
+	window.shader->setParameter("rotor", vec4(x, y, z, w));
+}
+
+}
+
 int main()
 {
-	MainWindow window;
 	window.startLoop();
 	window.terminate();
 
