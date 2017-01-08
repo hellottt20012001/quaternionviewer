@@ -37,8 +37,11 @@ void main()
 {
 	vec4 r = rotor;
 	vec4 pos = qprod(qconj(r), qprod(vec4(position, 0.), r));
-	gl_Position 	= projectionMatrix * cameraMatrix * transformMatrix * vec4(pos.xyz, 1.);
+	vec4 post = transformMatrix * vec4(pos.xyz, 1.);
+	vec4 nor = qprod(qconj(r), qprod(vec4(normal, 0.), r));
+	vec4 nort = transformMatrix * vec4(nor.xyz, 1.);
+	gl_Position 	= projectionMatrix * cameraMatrix * post;
 	textureCoord 	= textCoord;
-	normalVec 		= (transformMatrix * vec4(normal,0.)).xyz;
-	vertexCoord 	= (transformMatrix * vec4(position,1.)).xyz;
+	normalVec 		= nort.xyz;
+	vertexCoord 	= post.xyz;
 }

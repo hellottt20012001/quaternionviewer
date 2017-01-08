@@ -360,8 +360,16 @@ void __attribute__((used)) setRotation(float w, float x, float y, float z)
 
 }
 
+void setRotor(Quatf r)
+{
+	window.shader->setRotor(r);
+	//setParameter("rotor", vec4(getRotor()));
+}
+
+
 int main()
 {
+	setRotor(rotor(1.f, normalize(Quatf(0.f, 0.f, 1.f, 0.f))));
 	window.startLoop();
 	window.terminate();
 
