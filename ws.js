@@ -41,5 +41,5 @@ var WsClient = function()
 var wsClient = new WsClient();
 wsClient.connect();
 
-var setRotation = Module.cwrap('setRotation', null, ['number', 'number', 'number', 'number']);
-setRotation(0, 0, 1, 1);
+//var setRotation = Module.cwrap('setRotation', null, ['number', 'number', 'number', 'number']);
+//setRotation(0, 0, 1, 1);
