@@ -21,7 +21,6 @@ public:
 	void render();
 	void update();
 
-protected:
 	Renderer 		renderer;
 	SceneNode* 		rootNode;
 	Camera* 		camera;
@@ -39,7 +38,7 @@ protected:
 	void initCube();
 	void initPlate();
 	void initTriangle();
-public:
+
 	ThreeDShader* 	shader;
 	void setRotation(Quatf rotor);
 };
@@ -297,7 +296,7 @@ void MainWindow::render()
 	renderer.initFrame();
 
 	static float val = 0;
-	val += 0.004;
+	//val += 0.004;
 	Transform cubeTransform;
 	cubeTransform.scale(vec3(2, 1, 2));
 	cubeTransform.rotate(vec3(0, 0, val*3.14f));
@@ -350,26 +349,25 @@ void MainWindow::setRotation(Quatf rotor)
 
 MainWindow window;
 
-extern "C" {
-
-void __attribute__((used)) setRotation(float w, float x, float y, float z)
-{
-	Quatf rotor = Quatf(w, x, y, z);
-	window.shader->setParameter("rotor", vec4(x, y, z, w));
-}
-
-}
+// extern "C" {
+//
+// void __attribute__((used)) setRotation(float w, float x, float y, float z)
+// {
+// 	Quatf rotor = Quatf(w, x, y, z);
+// 	window.shader->setParameter("rotor", vec4(x, y, z, w));
+// }
+//
+// }
 
 void setRotor(Quatf r)
 {
-	window.shader->setRotor(r);
-	//setParameter("rotor", vec4(getRotor()));
+	window.cube->setRotor(r);
 }
 
 
 int main()
 {
-	setRotor(rotor(1.f, normalize(Quatf(0.f, 0.f, 1.f, 0.f))));
+	setRotor(rotor(1.f, Quatf(0.f, 0.f, 0.f, 1.f)));
 	window.startLoop();
 	window.terminate();
 
