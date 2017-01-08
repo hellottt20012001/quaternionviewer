@@ -8,7 +8,6 @@ precision mediump float;
 uniform mat4 transformMatrix;
 uniform mat4 cameraMatrix;
 uniform mat4 projectionMatrix;
-
 uniform vec4 rotor;
 
 layout(location = 0) in vec3 position;
@@ -31,12 +30,14 @@ vec4 qprod(vec4 q1, vec4 q2)
 
 vec4 qconj(vec4 q)
 {
-	return vec4 (q.x, q.y, q.z, -q.w);
+	return vec4 (-q.x, -q.y, -q.z, q.w);
 }
 
 void main()
 {
-	gl_Position 	= projectionMatrix * cameraMatrix * transformMatrix * qprod(qconj(rotor), qprod(vec4(position, 1.), rotor));
+	vec4 r = rotor;
+	vec4 pos = qprod(qconj(r), qprod(vec4(position, 0.), r));
+	gl_Position 	= projectionMatrix * cameraMatrix * transformMatrix * vec4(pos.xyz, 1.);
 	textureCoord 	= textCoord;
 	normalVec 		= (transformMatrix * vec4(normal,0.)).xyz;
 	vertexCoord 	= (transformMatrix * vec4(position,1.)).xyz;
