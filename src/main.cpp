@@ -13,6 +13,14 @@ using namespace std;
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 800
 
+int width = WINDOW_WIDTH, height = WINDOW_HEIGHT;
+int isFullscreen;
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
+
 class MainWindow : public Window
 {
 public:
@@ -102,7 +110,7 @@ void MainWindow::initTexture()
 void MainWindow::initCamera()
 {
 	Projection projection;
-	projection.setProjection(radians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 50.0f);
+	projection.setProjection(radians(70.0f), width, height, 0.01f, 50.0f);
 
 	camera = new Camera();
 	camera->lookAt(vec3(0,-8,8), vec3(0,0,0), vec3(0,0,1));
@@ -358,15 +366,40 @@ extern "C" {
 
 void __attribute__((used)) setRotation(float w, float x, float y, float z)
 {
-	Quatf r = Quatf(w, x, y, z);
+	Quatf r = normalize(Quatf(w, x, y, z));
 	setRotor(r);
 }
 
 }
 
+#ifdef __EMSCRIPTEN__
+EM_BOOL ResizeHandler(int eventType, const EmscriptenUiEvent *uiEvent, void *userData)
+{
+	emscripten_get_canvas_size(&width, &height, &isFullscreen);
+	glViewport(0, 0, width, height);
+
+	Projection projection;
+	projection.setProjection(radians(70.0f), width, height, 0.01f, 50.0f);
+	window.camera->setProjection(projection);
+	//window.shader->setParameter("iResolution", vec3(width, height, float(width)/height));
+	//camera.resolution = vec2(width, height);
+	//camera.aspectRatio = (double) width / (double) height;
+	return true;
+}
+#endif
+
 int main()
 {
-	setRotor(rotor(1.f, Quatf(0.f, 0.f, 0.f, 1.f)));
+	emscripten_get_canvas_size(&width, &height, &isFullscreen);
+	glViewport(0, 0, width, height);
+	Projection projection;
+	projection.setProjection(radians(70.0f), width, height, 0.01f, 50.0f);
+	window.camera->setProjection(projection);
+
+	#ifdef __EMSCRIPTEN__
+	emscripten_set_resize_callback(0, 0, true, ResizeHandler);
+	#endif
+	//setRotor(rotor(0.f, Quatf(0.f, 0.f, 0.f, 1.f)));
 	window.startLoop();
 	window.terminate();
 
