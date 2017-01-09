@@ -1,5 +1,7 @@
 "use strict";
 
+var reader = new FileReader();
+
 /* Class WsClient */
 var WsClient = function()
 {
@@ -20,7 +22,7 @@ var WsClient = function()
 
 		ws.onmessage = function(e)
 		{
-			// console.log(e);
+			console.log(e.data);
 			/* update parameters from serial */
 			var params = e.data.split(',');
 			for (var i=0; i<params.length; i++)
@@ -37,9 +39,3 @@ var WsClient = function()
 	this.disconnect = function() { ws.close(); };
 	this.send = function(msg) { ws.send(msg); };
 }
-
-var wsClient = new WsClient();
-wsClient.connect();
-
-var setRotation = Module.cwrap('setRotation', null, ['number', 'number', 'number', 'number']);
-setRotation(0, 0, 1, 1);

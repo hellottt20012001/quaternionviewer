@@ -5,7 +5,7 @@ var     SERIALPORT      = "/dev/ttyACM0";
 
 /* command line arguments */
 process.argv.forEach(function (val, index, array) {
-    if (val == '-n') { SERIALPORT = "/dev/pts/1"; }
+    if (val == '-n') { SERIALPORT = "/dev/pts/4"; }
 });
 
 var console = require('console');
