@@ -349,21 +349,20 @@ void MainWindow::setRotation(Quatf rotor)
 
 MainWindow window;
 
-// extern "C" {
-//
-// void __attribute__((used)) setRotation(float w, float x, float y, float z)
-// {
-// 	Quatf rotor = Quatf(w, x, y, z);
-// 	window.shader->setParameter("rotor", vec4(x, y, z, w));
-// }
-//
-// }
-
 void setRotor(Quatf r)
 {
 	window.cube->setRotor(r);
 }
 
+extern "C" {
+
+void __attribute__((used)) setRotation(float w, float x, float y, float z)
+{
+	Quatf r = Quatf(w, x, y, z);
+	setRotor(r);
+}
+
+}
 
 int main()
 {

@@ -36,12 +36,14 @@ vec4 qconj(vec4 q)
 void main()
 {
 	vec4 r = rotor;
-	vec4 pos = qprod(qconj(r), qprod(vec4(position, 0.), r));
-	vec4 post = transformMatrix * vec4(pos.xyz, 1.);
-	vec4 nor = qprod(qconj(r), qprod(vec4(normal, 0.), r));
-	vec4 nort = transformMatrix * vec4(nor.xyz, 1.);
-	gl_Position 	= projectionMatrix * cameraMatrix * post;
+	vec4 pos = transformMatrix * vec4(position, 1.);
+	vec4 post = qprod(qconj(r), qprod(vec4(pos.xyz, 0.), r));
+	vec4 post2 = vec4(post.xyz, 1.);
+	vec4 nor = transformMatrix * vec4(normal, 1.);
+	vec4 nort = qprod(qconj(r), qprod(vec4(nor.xyz, 0.), r));
+	vec4 nort2 = vec4(nort.xyz, 1.);
+	gl_Position 	= projectionMatrix * cameraMatrix * post2;
 	textureCoord 	= textCoord;
-	normalVec 		= nort.xyz;
-	vertexCoord 	= post.xyz;
+	normalVec 		= nort2.xyz;
+	vertexCoord 	= post2.xyz;
 }
