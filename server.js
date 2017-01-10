@@ -5,7 +5,7 @@ var     SERIALPORT      = "/dev/ttyACM0";
 
 /* command line arguments */
 process.argv.forEach(function (val, index, array) {
-    if (val == '-n') { SERIALPORT = "/dev/pts/4"; }
+    if (val == '-n') { SERIALPORT = "/dev/pts/2"; }
 });
 
 var console = require('console');
@@ -110,10 +110,10 @@ wsServer.on('connect', onWsConnect);
 
 var SerialPort = require('serialport');
 
-var serial = new SerialPort(SERIALPORT, { baudRate: 115200, lock: false, parser: SerialPort.parsers.byteLength(1) });
+var serial = new SerialPort(SERIALPORT, { baudRate: 115200, lock: false, parser: SerialPort.parsers.readline('\r') });
 
 serial.on('data', function (data) {
-        if (connected) send(data);
+        if (connected) send(data.toString());
         process.stdout.write(data.toString()); /* pass data from serial to stdout */
 });
 

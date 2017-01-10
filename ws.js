@@ -28,7 +28,7 @@ var WsClient = function()
 			for (var i=0; i<params.length; i++)
 			{
 				var param = params[i].split('=');
-				window[param[0]] = param[1];
+				window["_" + param[0]] = param[1];
 			}
 			/* update client */
 			update();
