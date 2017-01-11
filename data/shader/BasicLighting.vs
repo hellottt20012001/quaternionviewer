@@ -35,7 +35,7 @@ vec4 qconj(vec4 q)
 
 void main()
 {
-	vec4 r = rotor;
+	vec4 r = qconj(rotor);
 	vec4 pos = transformMatrix * vec4(position, 1.);
 	vec4 post = qprod(qconj(r), qprod(vec4(pos.xyz, 0.), r));
 	vec4 post2 = vec4(post.xyz, 1.);
